@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IdeaPicker.MainPage">
+
+    <StackLayout HorizontalOptions="Center">
+        
+        <Border StrokeThickness="5" 
+                Margin="0, 250, 0, 0">
+            <Label x:Name="lblRandomIdea" 
+                   Padding="10, 0, 10, 0" 
+                   Margin="0, 10, 0, 10"/>
+        </Border>
+        <Button x:Name="btnRandomizIdea" 
+                Text="Get Random Idea" 
+                Padding="30, 0, 30, 0"
+                Margin="0, 10, 0, 10"
+                Clicked="BtnRandomizeIdea_OnClicked"/>
+        
+        <Picker x:Name="TopicPicker" 
+                BackgroundColor="LightGrey" 
+                ItemDisplayBinding="{Binding Name}"/>
+        
+    </StackLayout>
+</ContentPage>

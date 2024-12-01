@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="IdeaPicker.Pages.CreateEditPage">
+    <ScrollView>
+        <StackLayout>
+            
+            <Grid HorizontalOptions="Center" Padding="0, 10, 0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="75"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Label Text="Name of List:"
+                       VerticalTextAlignment="Center"
+                       Grid.Column="0"
+                       Grid.Row="0"/>
+                <Entry x:Name="txtTopicName"
+                       Grid.Column="2"
+                       Grid.Row="0"/>
+                <Button x:Name="btnSaveTopicName"
+                        Text="Save"
+                        Grid.Column="4"
+                        Grid.Row="0"
+                        Clicked="BtnSaveTopicName_OnClicked"/>
+
+                
+                <Label Text="Name of Idea:"
+                       VerticalTextAlignment="Center"
+                       Grid.Column="0"
+                       Grid.Row="2"/>
+                <Entry x:Name="txtIdea"
+                       Grid.Column="2"
+                       Grid.Row="2"/>
+                <Button x:Name="btnSaveIdeaDescription"
+                        Text="Save"
+                        Grid.Column="4"
+                        Grid.Row="2"
+                        Clicked="BtnSaveIdeaDescription_OnClicked"/>
+                
+            </Grid>
+            
+            
+            <ListView x:Name="lstIdeas"
+                      Margin="50, 20, 50, 300"
+                      ItemSelected="LstIdeas_OnItemSelected"/>
+            
+            <Grid HorizontalOptions="Center">
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Button x:Name="btnUpdate" 
+                        Text="Update" 
+                        Padding="20, 5"
+                        Margin="20, 20"
+                        Grid.Column="0"
+                        Grid.Row="0"
+                        Clicked="BtnUpdate_OnClicked"/>
+                
+                <Button x:Name="btnAdd" 
+                        Text="Add" 
+                        Padding="20, 5"
+                        Margin="20, 20"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Clicked="BtnAdd_OnClicked"/>
+
+                <Button x:Name="btnDelete" 
+                        Text="Delete" 
+                        Padding="20, 5" 
+                        Margin="20, 20"
+                        Grid.Column="2"
+                        Grid.Row="0"
+                        Clicked="BtnDelete_OnClicked"/>
+            </Grid>
+            
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
