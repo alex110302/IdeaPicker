@@ -19,6 +19,8 @@ public partial class CreateEditPage : ContentPage
     private int _topicId;
     
     private string _topicName;
+
+    private bool _lockSave; //kind of a quick fix because bugs happen when I was allowing multi changes... Might come back and fix...
     
     public CreateEditPage(string topicName, int topicId)
     {
@@ -57,11 +59,12 @@ public partial class CreateEditPage : ContentPage
     private void BtnSaveIdeaDescription_OnClicked(object sender, EventArgs e)
     {
         Idea idea = lstIdeas.SelectedItem as Idea;
-        if (idea != null)
+        if (_lockSave) DisplayAlert("Update Idea", "Please update before editing idea!", "Ok");
+        else if (idea != null)
         {
-             /*********************************************
+            /*********************************************
              * For some reason when changing properties   *
-             * for the idea that is slected in the        *
+             * for the idea that is selected in the       *
              * List view it also changes the values       *
              * in the corresponding idea in cahsedideas.  *
              * So I had to save the value of the          *
@@ -71,42 +74,40 @@ public partial class CreateEditPage : ContentPage
              * List it will change it in another even     *
              * after it as been added to the other list...*
              *********************************************/
-            string tempDescription = idea.Description;
-            Repository.CashedIdeas.Remove(idea);
             
             _ideas.Remove(idea);
-            idea.Description = txtIdea.Text;
-            
             _ideas.Add(new Idea
             {
                 Id = idea.Id,
-                Description = idea.Description,
+                Description = txtIdea.Text,
                 TopicId = idea.TopicId
             });
+
             _toBeUpdatedIdeas.Add(new Idea
             {
                 Id = idea.Id,
-                Description = idea.Description,
+                Description = txtIdea.Text,
                 TopicId = idea.TopicId
             });
             
-            idea.Description = tempDescription;
-            Repository.CashedIdeas.Add(idea);
+            _lockSave = true;
         }
         else DisplayAlert("No Idea Selected", "Please select an idea to edit!", "Ok");
     }
     
     private void BtnUpdate_OnClicked(object sender, EventArgs e)
     {
-        List<Idea> test = _toBeUpdatedIdeas;
-        test = test;
-        if (_toBeUpdatedIdeas.Count > 0) foreach (Idea idea in _toBeUpdatedIdeas) Repository.UpdateIdea(idea);
         if (_toBeDeletedIdeas.Count > 0) foreach (Idea idea in _toBeDeletedIdeas) Repository.DeleteIdea(idea);
-        if (_toBeAddedIdeas.Count > 0)
-            foreach (Idea idea in _toBeAddedIdeas)
+        if (_toBeAddedIdeas.Count > 0) foreach (Idea idea in _toBeAddedIdeas) Repository.SetIdea(idea);
+        if (_toBeUpdatedIdeas.Count > 0)
+            foreach (Idea idea in _toBeUpdatedIdeas)
             {
-                Repository.SetIdea(idea);
-                Repository.UpdateIdea(idea);
+                Repository.UpdateIdea(new Idea
+                {
+                    Id = idea.Id,
+                    Description = idea.Description,
+                    TopicId = idea.TopicId
+                });
             }
         if (_toBeAddedIdeas.Count > 0 || _toBeDeletedIdeas.Count > 0 || _toBeUpdatedIdeas.Count > 0)
         {
@@ -118,6 +119,10 @@ public partial class CreateEditPage : ContentPage
         Topic topic = Repository.GetSpecificTopic(_topicId);
         topic.Name = _topicName;
         Repository.UpdateTopic(topic);
+
+        lstIdeas.SelectedItem = null;
+        txtIdea.Text = string.Empty;
+        _lockSave = false;
     }
     
     private void BtnAdd_OnClicked(object sender, EventArgs e)
@@ -134,6 +139,8 @@ public partial class CreateEditPage : ContentPage
             _ideas.Add(idea);
             
             txtIdea.Text = string.Empty;
+
+            _lockSave = true;
         }
         else DisplayAlert("No Idea Description", "Please Describe an idea to Add!", "Ok");
     }

@@ -43,11 +43,13 @@ public static class Repository
     public static void SetTopic(Topic topic)
     {
         _database.Insert(topic);
+        CashedTopics = GetTopicsList();
     }
 
     public static void SetIdea(Idea idea)
     {
         _database.Insert(idea);
+        CashedIdeas= GetIdeaList();
     }
 
     public static void UpdateTopic(Topic topic)
